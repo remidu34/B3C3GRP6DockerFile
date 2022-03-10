@@ -52,9 +52,9 @@ namespace B3C3GRP6.Controllers
             {
                 if (authenticateModel.Login != null && authenticateModel.Password != null)
                 {
-                    //var resultBool = VerifyAccesAd(authenticateModel.Login, authenticateModel.Password);
-                    /*if (!resultBool)
-                        return Unauthorized();*/
+                    var resultBool = VerifyAccesAd(authenticateModel.Login, authenticateModel.Password);
+                    if (!resultBool)
+                        return Unauthorized();
                     // incremental delay to prevent brute force attacks
                     var delayForUser = GetDelay(authenticateModel.Login);
 
@@ -88,6 +88,8 @@ namespace B3C3GRP6.Controllers
                         _compteProvider.UpdateBrowser(currentBrowser.Name, user.IdCompte);
                         _compteProvider.UpdateIp(ip, user.IdCompte);
                         _compteProvider.UpdateIncrementDelay(1, authenticateModel.Login);
+
+                        //SendEmailSuspect(user.Login);
                         return Ok(GenerateToken(user, false, false, true));
                     }
                     else
@@ -193,6 +195,30 @@ namespace B3C3GRP6.Controllers
                 }
                 };
 
+                await _smtpServices.SendEmailForEmailConfirmation(options);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex);
+            }
+        }
+        /// <summary>
+        /// Send email if ip or browser are update
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        private async Task SendEmailSuspect(string email)
+        {
+            try
+            {
+                EmailModel options = new EmailModel
+                {
+                    ToEmails = email,
+                    PlaceHolders = new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("{{email}}", email)
+                }
+                };
                 await _smtpServices.SendEmailForEmailConfirmation(options);
             }
             catch (Exception ex)

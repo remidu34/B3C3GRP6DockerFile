@@ -46,6 +46,14 @@ namespace B3C3GRP6.Services
 
             await SendEmail(emailModel);
         }
+        public async Task SendEmailForSuspectMail(EmailModel emailModel)
+        {
+            emailModel.Subject = UpdatePlaceHolders("Authentification suspecte de :", emailModel.PlaceHolders);
+
+            emailModel.Body = UpdatePlaceHolders(GetEmailBody("Suspect"), emailModel.PlaceHolders);
+
+            await SendEmail(emailModel);
+        }
         private string UpdatePlaceHolders(string text, List<KeyValuePair<string, string>> keyValuePairs)
         {
             if (!string.IsNullOrEmpty(text) && keyValuePairs != null)
