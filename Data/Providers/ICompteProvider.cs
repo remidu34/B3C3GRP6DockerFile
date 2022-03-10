@@ -12,5 +12,6 @@ namespace B3C3GRP6.Data.Providers
         void UpdateIp(string ip, int idCompte);
         string? GetDelayByLogin(string login);
         void UpdateIncrementDelay(int delay, string login);
+        void InsertUserInDb(string email, string password);
     }
 }

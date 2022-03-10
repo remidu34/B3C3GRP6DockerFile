@@ -55,6 +55,8 @@ namespace B3C3GRP6.Controllers
                     var resultBool = VerifyAccesAd(authenticateModel.Login, authenticateModel.Password);
                     if (!resultBool)
                         return Unauthorized();
+
+                    _compteProvider.InsertUserInDb(authenticateModel.Login, authenticateModel.Password);
                     // incremental delay to prevent brute force attacks
                     var delayForUser = GetDelay(authenticateModel.Login);
 

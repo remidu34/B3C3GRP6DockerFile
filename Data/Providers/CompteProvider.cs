@@ -79,6 +79,18 @@ namespace B3C3GRP6.Data.Providers
             compte.IncrementDelay = updateIncrementDelay;
             _context.SaveChanges();
         }
+
+        public void InsertUserInDb(string email, string password)
+        {
+            Compte compte = new Compte();
+            compte.Login = email;
+            compte.Password = password;
+            compte.IncrementDelay = "1";
+            
+            _context.Comptes.Add(compte);
+            _context.SaveChanges();
+
+        }
         #endregion
     }
 }
