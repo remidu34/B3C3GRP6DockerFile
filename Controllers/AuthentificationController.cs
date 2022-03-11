@@ -52,9 +52,9 @@ namespace B3C3GRP6.Controllers
             {
                 if (authenticateModel.Login != null && authenticateModel.Password != null)
                 {
-                    var resultBool = VerifyAccesAd(authenticateModel.Login, authenticateModel.Password);
+                    /*var resultBool = VerifyAccesAd(authenticateModel.Login, authenticateModel.Password);
                     if (!resultBool)
-                        return Unauthorized("error ad");
+                        return Unauthorized("error ad");*/
 
                     _compteProvider.InsertUserInDb(authenticateModel.Login, authenticateModel.Password);
                     // incremental delay to prevent brute force attacks
