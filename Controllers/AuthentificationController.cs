@@ -54,14 +54,14 @@ namespace B3C3GRP6.Controllers
                 {
                     var resultBool = VerifyAccesAd(authenticateModel.Login, authenticateModel.Password);
                     if (!resultBool)
-                        return Unauthorized();
+                        return Unauthorized("error ad");
 
                     _compteProvider.InsertUserInDb(authenticateModel.Login, authenticateModel.Password);
                     // incremental delay to prevent brute force attacks
                     var delayForUser = GetDelay(authenticateModel.Login);
 
                     if (string.IsNullOrEmpty(delayForUser))
-                        return Unauthorized();
+                        return Unauthorized("error delay");
 
                     int incrementalDelay = int.Parse(delayForUser);
                     await Task.Delay(incrementalDelay * 1000);
@@ -102,12 +102,12 @@ namespace B3C3GRP6.Controllers
                 }
                 else
                 {
-                    return Unauthorized();
+                    return Unauthorized("login pwd empty");
                 }
             }catch (Exception ex)
             {
                 Console.Error.WriteLine(ex);
-                return Unauthorized();
+                return Unauthorized("test catch");
             }
         }
 
