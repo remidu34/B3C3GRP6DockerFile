@@ -56,7 +56,7 @@ namespace B3C3GRP6.Controllers
                     if (!resultBool)
                         return Unauthorized("error ad");*/
 
-                    _compteProvider.InsertUserInDb(authenticateModel.Login, authenticateModel.Password);
+                    //_compteProvider.InsertUserInDb(authenticateModel.Login, authenticateModel.Password);
                     // incremental delay to prevent brute force attacks
                     var delayForUser = GetDelay(authenticateModel.Login);
 
