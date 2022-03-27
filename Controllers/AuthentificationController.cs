@@ -6,6 +6,7 @@ using B3C3GRP6.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Novell.Directory.Ldap;
 using Shyjus.BrowserDetection;
 using System.DirectoryServices;
 using System.IdentityModel.Tokens.Jwt;
@@ -52,9 +53,9 @@ namespace B3C3GRP6.Controllers
             {
                 if (authenticateModel.Login != null && authenticateModel.Password != null)
                 {
-                    /*var resultBool = VerifyAccesAd(authenticateModel.Login, authenticateModel.Password);
+                    var resultBool = VerifyAccesAd(authenticateModel.Login, authenticateModel.Password);
                     if (!resultBool)
-                        return Unauthorized("error ad");*/
+                        return Unauthorized("error ad");
 
                     //_compteProvider.InsertUserInDb(authenticateModel.Login, authenticateModel.Password);
                     // incremental delay to prevent brute force attacks
@@ -262,7 +263,7 @@ namespace B3C3GRP6.Controllers
 
         private bool VerifyAccesAd(string login, string password)
         {
-            try
+            /*try
 
             {
                 string path = _configuration.GetSection("ConnectionActiveDirectory").GetValue<string>("Url");
@@ -284,6 +285,31 @@ namespace B3C3GRP6.Controllers
 
             {
                 Console.WriteLine(Ex.Message);
+                return false;
+            }*/
+            var domainComponent = "OU=soignants;DC=clinique;DC=chatelet";
+            try
+            {
+                var cn = new LdapConnection();
+
+                cn.Connect("192.168.4.51", 389);
+                cn.Bind("cn=" + login + domainComponent, password);
+
+                //Console.WriteLine(cn.WhoAmI());
+                //Console.WriteLine(cn.FetchSchema("cn=" + userName + ",dc=mydomain,dc=home"));
+                Console.WriteLine("connexion reussi");
+                cn.Disconnect();
+
+                return true;
+            }
+            catch (LdapException e)
+            {
+                 Console.WriteLine("LDAP Error: " + e.Message);
+                return false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("LDAP Other Error:" + e.Message);
                 return false;
             }
         }
