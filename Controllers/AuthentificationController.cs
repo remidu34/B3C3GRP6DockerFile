@@ -292,7 +292,7 @@ namespace B3C3GRP6.Controllers
             try
             {            
                 cn.Connect("ldap://192.168.4.51", 389);
-                cn.Bind("cn=" + login + domainComponent, password);
+                cn.Bind("cn=" + login + ","+ domainComponent, password);
 
                 //Console.WriteLine(cn.WhoAmI());
                 //Console.WriteLine(cn.FetchSchema("cn=" + userName + ",dc=mydomain,dc=home"));
