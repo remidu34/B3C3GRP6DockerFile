@@ -287,20 +287,19 @@ namespace B3C3GRP6.Controllers
                 Console.WriteLine(Ex.Message);
                 return false;
             }*/
+            var cn = new LdapConnection();
             var domainComponent = "OU=soignants;DC=clinique;DC=chatelet";
             try
-            {
-                var cn = new LdapConnection();
-
-                cn.Connect("192.168.4.51", 389);
+            {            
+                cn.Connect("ldap://192.168.4.51", 389);
                 cn.Bind("cn=" + login + domainComponent, password);
 
                 //Console.WriteLine(cn.WhoAmI());
                 //Console.WriteLine(cn.FetchSchema("cn=" + userName + ",dc=mydomain,dc=home"));
-                Console.WriteLine("connexion reussi");
+                Console.WriteLine("premier ldap");
                 cn.Disconnect();
 
-                return true;
+               return true;
             }
             catch (LdapException e)
             {
@@ -312,6 +311,7 @@ namespace B3C3GRP6.Controllers
                 Console.WriteLine("LDAP Other Error:" + e.Message);
                 return false;
             }
+
         }
 
         private string GetDelay(string login)
