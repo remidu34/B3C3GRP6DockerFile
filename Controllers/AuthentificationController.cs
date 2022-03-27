@@ -264,6 +264,16 @@ namespace B3C3GRP6.Controllers
         private bool VerifyAccesAd(string login, string password)
         {
             /*try
+            {
+                DirectoryEntry directoryEntry = new DirectoryEntry("LDAP://ad.clinique.chatelet", login, password);
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(" Exception verify " + ex.Message);
+            }*/
+            /*try
 
             {
                 string path = _configuration.GetSection("ConnectionActiveDirectory").GetValue<string>("Url");
@@ -290,20 +300,20 @@ namespace B3C3GRP6.Controllers
             var cn = new LdapConnection();
             var domainComponent = "OU=soignants;DC=clinique;DC=chatelet";
             try
-            {            
-                cn.Connect("ldap://192.168.4.51", 389);
-                cn.Bind("cn=" + login + ","+ domainComponent, password);
+            {
+                cn.Connect("LDAP://127.0.0.1", 389);
+                cn.Bind(login,password);
 
                 //Console.WriteLine(cn.WhoAmI());
                 //Console.WriteLine(cn.FetchSchema("cn=" + userName + ",dc=mydomain,dc=home"));
-                Console.WriteLine("premier ldap");
+                Console.WriteLine("premier ldap ");
                 cn.Disconnect();
 
-               return true;
+                return true;
             }
             catch (LdapException e)
             {
-                 Console.WriteLine("LDAP Error: " + e.Message);
+                Console.WriteLine("LDAP Error: " + e.Message);
                 return false;
             }
             catch (Exception e)
